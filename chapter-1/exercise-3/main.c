@@ -6,7 +6,7 @@
 typedef struct str_t {
   char* text;
   int size;
-  int capacity;
+  int capacity; // does not include null terminator
 } str_t;
 
 typedef struct node_t {
@@ -20,7 +20,7 @@ node_t* allocate(const char* message) {
 
   node_t* node = malloc(sizeof *node);
   node->str.text = malloc(len + 1);
-  strcpy(node->str.text, message);
+  memcpy(node->str.text, message, len + 1);
   node->str.size = len;
   node->str.capacity = len;
 
@@ -30,11 +30,29 @@ node_t* allocate(const char* message) {
   return node;
 }
 
-bool list_add(node_t* root, const char* message) {
-  if (root == NULL) {
+void deallocate(node_t** node) {
+  if (node == NULL || *node == NULL) {
+    return;
+  }
+  node_t* current = *node;
+  while (current) {
+    node_t* next = current->next;
+    free(current->str.text);
+    free(current);
+    current = next;
+  }
+  *node = NULL;
+}
+
+bool list_add(node_t** root, const char* message) {
+  if (root == NULL || message == NULL) {
     return false;
   }
-  node_t* current = root;
+  if (*root == NULL) {
+    *root = allocate(message);
+    return true;
+  }
+  node_t* current = *root;
   while (current->next) {
     current = current->next;
   }
@@ -52,6 +70,9 @@ bool list_remove(node_t** root, const char* message) {
     node_t* to_remove = *root;
     node_t* next = (*root)->next;
     *root = next;
+    if (next) {
+      next->prev = NULL;
+    }
     free(to_remove->str.text);
     free(to_remove);
     return true;
@@ -91,17 +112,18 @@ node_t* list_find(node_t* root, const char* message) {
 
 void display(node_t* root) {
   if (root == NULL) {
+    printf("--- empty list ---\n");
     return;
   }
   node_t* current = root;
   while (current) {
-    if (current->next == NULL) {
-      break;
+    printf("%s", current->str.text);
+    if (current->next) {
+      printf(", ");
     }
-    printf("%s, ", current->str.text);
     current = current->next;
   }
-  printf("%s\n", current->str.text);
+  printf("\n");
 }
 
 int main(int argc, char** argv) {
@@ -111,9 +133,9 @@ int main(int argc, char** argv) {
 
   printf("msg: %s\n", root->str.text);
 
-  list_add(root, "second");
-  list_add(root, "third");
-  list_add(root, "fourth");
+  list_add(&root, "second");
+  list_add(&root, "third");
+  list_add(&root, "fourth");
 
   display(root);
 
@@ -134,9 +156,9 @@ int main(int argc, char** argv) {
 
   display(root);
 
-  list_add(root, "fifth");
-  list_add(root, "sixth");
-  list_add(root, "seventh");
+  list_add(&root, "fifth");
+  list_add(&root, "sixth");
+  list_add(&root, "seventh");
 
   node_t* sixth = list_find(root, "sixth");
   printf("Found: %s\n", sixth->str.text);
@@ -145,6 +167,22 @@ int main(int argc, char** argv) {
 
   list_remove(&root, "second");
   list_remove(&root, "seventh");
+
+  display(root);
+
+  list_remove(&root, "fifth");
+  list_remove(&root, "sixth");
+
+  display(root);
+
+  list_add(&root, "this");
+  list_add(&root, "is");
+  list_add(&root, "a");
+  list_add(&root, "list");
+
+  display(root);
+
+  deallocate(&root);
 
   display(root);
 
