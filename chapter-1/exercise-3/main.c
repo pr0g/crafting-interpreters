@@ -1,12 +1,13 @@
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 typedef struct str_t {
   char* text;
-  int size;
-  int capacity; // does not include null terminator
+  size_t size;
+  size_t capacity; // does not include null terminator
 } str_t;
 
 typedef struct node_t {
@@ -16,22 +17,30 @@ typedef struct node_t {
 } node_t;
 
 node_t* allocate(const char* message) {
-  int len = strlen(message);
-
+  if (!message) {
+    return nullptr;
+  }
+  const size_t len = strlen(message);
   node_t* node = malloc(sizeof *node);
-  node->str.text = malloc(len + 1);
-  memcpy(node->str.text, message, len + 1);
+  if (!node) {
+    return nullptr;
+  }
+  const size_t buffer_size = len + 1;
+  node->str.text = malloc(buffer_size);
+  if (!node->str.text) {
+    free(node);
+    return nullptr;
+  }
+  memcpy(node->str.text, message, buffer_size);
   node->str.size = len;
   node->str.capacity = len;
-
-  node->next = NULL;
-  node->prev = NULL;
-
+  node->next = nullptr;
+  node->prev = nullptr;
   return node;
 }
 
 void deallocate(node_t** node) {
-  if (node == NULL || *node == NULL) {
+  if (!node || !*node) {
     return;
   }
   node_t* current = *node;
@@ -41,29 +50,32 @@ void deallocate(node_t** node) {
     free(current);
     current = next;
   }
-  *node = NULL;
+  *node = nullptr;
 }
 
 bool list_add(node_t** root, const char* message) {
-  if (root == NULL || message == NULL) {
+  if (!root || !message) {
     return false;
   }
-  if (*root == NULL) {
+  if (!*root) {
     *root = allocate(message);
-    return true;
+    return *root != nullptr;
   }
   node_t* current = *root;
   while (current->next) {
     current = current->next;
   }
-  current->next = allocate(message);
+  node_t* next = allocate(message);
+  if (!next) {
+    return false;
+  }
+  current->next = next;
   current->next->prev = current;
-
   return true;
 }
 
 bool list_remove(node_t** root, const char* message) {
-  if (root == NULL || *root == NULL) {
+  if (!root || !*root || !message) {
     return false;
   }
   if (strcmp((*root)->str.text, message) == 0) {
@@ -71,13 +83,13 @@ bool list_remove(node_t** root, const char* message) {
     node_t* next = (*root)->next;
     *root = next;
     if (next) {
-      next->prev = NULL;
+      next->prev = nullptr;
     }
     free(to_remove->str.text);
     free(to_remove);
     return true;
   }
-  node_t* current = *root;
+  node_t* current = (*root)->next;
   while (current) {
     if (strcmp(current->str.text, message) == 0) {
       node_t* to_remove = current;
@@ -97,8 +109,8 @@ bool list_remove(node_t** root, const char* message) {
 }
 
 node_t* list_find(node_t* root, const char* message) {
-  if (root == NULL) {
-    return NULL;
+  if (!root || !message) {
+    return nullptr;
   }
   node_t* current = root;
   while (current) {
@@ -107,11 +119,11 @@ node_t* list_find(node_t* root, const char* message) {
     }
     current = current->next;
   }
-  return NULL;
+  return nullptr;
 }
 
 void display(node_t* root) {
-  if (root == NULL) {
+  if (!root) {
     printf("--- empty list ---\n");
     return;
   }
