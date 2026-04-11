@@ -1,0 +1,11 @@
+plugins {
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+application {
+    mainClass = 'com.craftinginterpreters.lox.Lox'
+}
