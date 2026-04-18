@@ -31,7 +31,10 @@ node_t* allocate(const char* message) {
     free(node);
     return nullptr;
   }
-  memcpy(node->str.text, message, buffer_size);
+  // copy characters only
+  memcpy(node->str.text, message, len);
+  // add explicit null terminator
+  node->str.text[len] = '\0';
   node->str.size = len;
   node->str.capacity = len;
   node->next = nullptr;
@@ -70,7 +73,7 @@ bool list_add(node_t** root, const char* message) {
     return false;
   }
   current->next = next;
-  current->next->prev = current;
+  next->prev = current;
   return true;
 }
 
