@@ -7,7 +7,7 @@
 typedef struct str_t {
   char* text;
   size_t size;
-  size_t capacity; // does not include null terminator
+  size_t capacity;
 } str_t;
 
 typedef struct node_t {
@@ -20,23 +20,23 @@ node_t* allocate(const char* message) {
   if (!message) {
     return nullptr;
   }
-  const size_t len = strlen(message);
+  const size_t length = strlen(message);
   node_t* node = malloc(sizeof *node);
   if (!node) {
     return nullptr;
   }
-  const size_t buffer_size = len + 1;
-  node->str.text = malloc(buffer_size);
+  const size_t capacity = length + 1;
+  node->str.text = malloc(capacity);
   if (!node->str.text) {
     free(node);
     return nullptr;
   }
   // copy characters only
-  memcpy(node->str.text, message, len);
+  memcpy(node->str.text, message, length);
   // add explicit null terminator
-  node->str.text[len] = '\0';
-  node->str.size = len;
-  node->str.capacity = len;
+  node->str.text[length] = '\0';
+  node->str.size = length;
+  node->str.capacity = capacity;
   node->next = nullptr;
   node->prev = nullptr;
   return node;
