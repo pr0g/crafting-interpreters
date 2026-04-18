@@ -1,0 +1,9 @@
+/* this is a function comment */
+fun a_friendly_first_function() {
+  // this is a function to parse
+  var a = 5;
+  /* this is a multiline function comment
+     that goes on for a while describing 
+     almost nothing, but it's a good test */
+  return a + 12;
+}
