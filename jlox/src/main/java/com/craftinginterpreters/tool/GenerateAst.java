@@ -27,7 +27,7 @@ public class GenerateAst {
     PrintWriter writer = new PrintWriter(path, "UTF-8");
     writer.println("package com.craftinginterpreters.lox;");
     writer.println();
-    writer.println("import java.util.List");
+    writer.println("import java.util.List;");
     writer.println();
     writer.println("abstract class " + baseName + " {");
 
@@ -64,7 +64,7 @@ public class GenerateAst {
 
     writer.println();
     writer.println("    @Override");
-    writer.println("    <R> R accept(Vistor<R> visitor) {");
+    writer.println("    <R> R accept(Visitor<R> visitor) {");
     writer.println("      return visitor.visit" + className + baseName + "(this);");
     writer.println("    }");
 
