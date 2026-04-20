@@ -3,3 +3,5 @@ build/run commands
 gradle run
 ./gradlew build
 java -cp build/classes/java/main com.craftinginterpreters.lox.Lox test.lox
+
+java -cp build/classes/java/main com.craftinginterpreters.tool.GenerateAst .
