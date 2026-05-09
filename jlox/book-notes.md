@@ -18,22 +18,31 @@ Recursion in the grammar is a good sign that the language being designed is cont
 ### Lox (initial) grammar
 
 ```text
-expression    -> literal | unary | binary | grouping;
-literal       -> NUMBER | STRING | "true" | "false" | "nil";
-grouping      -> "(" expression ")";
-unary         -> ( "-" | "!" ) expression;
-binary        -> expression operator expression;
-operator      -> "==" | "!=" | "<" | "<=" | ">" | ">=" | "+" | "-" | "*" | "/";
+expression    -> literal | unary | binary | grouping ;
+literal       -> NUMBER | STRING | "true" | "false" | "nil" ;
+grouping      -> "(" expression ")" ;
+unary         -> ( "-" | "!" ) expression ;
+binary        -> expression operator expression ;
+operator      -> "==" | "!=" | "<" | "<=" | ">" | ">=" | "+" | "-" | "*" | "/" ;
 ```
 
 ### Lox (expanded) grammar
 
 ```text
-expression    -> equality
+expression    -> equality ;
 equality      -> comparison ( ( "!=" | "==" ) comparison )* ;
 comparison    -> term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
 term          -> factor ( ( "-" | "+" ) factor )* ;
 factor        -> unary ( ( "/" | "*" ) unary )* ;
 unary         -> ( "!" | "-" ) unary | primary ;
 primary       -> NUMBER | STRING | "true" | "false" | "nil" | "(" expression ")" ;
+```
+
+### Lox statement grammar
+
+```text
+program       -> statement* EOF ;
+statement     -> exprStmt | printStmt ;
+exprStmt      -> expression ";" ;
+printStmt     -> "print" expression ";" ;
 ```
