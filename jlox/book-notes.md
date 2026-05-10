@@ -57,3 +57,10 @@ varDecl       -> "var" IDENTIFIER ( "=" expression )? ";" ;
 
 primary       -> NUMBER | STRING | "true" | "false" | "nil" | "(" expression ")" | IDENTIFIER ; // updated 'primary' grammar from earlier
 ```
+
+### Lox assignment syntax
+
+```text
+expression    -> assignment ;
+assignment    -> IDENTIFIER "=" assignment | equality ;
+```

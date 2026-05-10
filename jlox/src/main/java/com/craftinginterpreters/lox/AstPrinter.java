@@ -25,6 +25,14 @@ class AstPrinter implements Expr.Visitor<String> {
   }
 
   @Override
+  public String visitAssignExpr(Expr.Assign expr) {
+    if (expr.value == null) {
+      return "nil";
+    }
+    return expr.value.toString();
+  }
+
+  @Override
   public String visitVariableExpr(Expr.Variable expr) {
     if (expr.name == null) {
       return "nil";
