@@ -46,3 +46,14 @@ statement     -> exprStmt | printStmt ;
 exprStmt      -> expression ";" ;
 printStmt     -> "print" expression ";" ;
 ```
+
+### Lox (expanded) statement grammar
+
+```text
+program       -> declaration* EOF ;
+declaration   -> varDecl | statement ;
+statement     -> exprStmt | printStmt ;
+varDecl       -> "var" IDENTIFIER ( "=" expression )? ";" ;
+
+primary       -> NUMBER | STRING | "true" | "false" | "nil" | "(" expression ")" | IDENTIFIER ; // updated 'primary' grammar from earlier
+```
