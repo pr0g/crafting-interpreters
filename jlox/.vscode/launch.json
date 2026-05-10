@@ -22,7 +22,7 @@
       "type": "java",
       "name": "Lox",
       "request": "launch",
-      "args": "${workspaceFolder}/test.lox",
+      "args": "${workspaceFolder}/test-2.lox",
       "mainClass": "com.craftinginterpreters.lox.Lox",
       "projectName": "jlox"
     }
