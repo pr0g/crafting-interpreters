@@ -3,12 +3,29 @@ package com.craftinginterpreters.lox;
 import java.util.List;
 
 class Interpreter implements Expr.Visitor<Object>,
-                             Stmt.Visitor<Void> {
+    Stmt.Visitor<Void> {
   private Environment environment = new Environment();
 
   @Override
   public Object visitLiteralExpr(Expr.Literal expr) {
     return expr.value;
+  }
+
+  @Override
+  public Object visitLogicalExpr(Expr.Logical expr) {
+    Object left = evaluate(expr.left);
+    if (expr.operator.type == TokenType.OR) {
+      if (isTruthy(left)) {
+        return left;
+      }
+    } else {
+      if (!isTruthy(left)) {
+        return left;
+      }
+    }
+    // only evaluates right expr if left expr passes condition based 
+    // on being an 'or' or 'and' logical operator (short-circuiting)
+    return evaluate(expr.right);
   }
 
   @Override
@@ -25,7 +42,7 @@ class Interpreter implements Expr.Visitor<Object>,
         return null;
     }
   }
-  
+
   @Override
   public Object visitVariableExpr(Expr.Variable expr) {
     return environment.get(expr.name);
@@ -64,7 +81,7 @@ class Interpreter implements Expr.Visitor<Object>,
     }
     return left.equals(right);
   }
-  
+
   private String stringify(Object object) {
     if (object == null) {
       return "nil";
@@ -158,40 +175,40 @@ class Interpreter implements Expr.Visitor<Object>,
     switch (expr.operator.type) {
       case GREATER:
         checkNumberOperands(expr.operator, left, right);
-        return (double)left > (double)right;
+        return (double) left > (double) right;
       case GREATER_EQUAL:
         checkNumberOperands(expr.operator, left, right);
-        return (double)left >= (double)right;
+        return (double) left >= (double) right;
       case LESS:
         checkNumberOperands(expr.operator, left, right);
-        return (double)left < (double)right;
+        return (double) left < (double) right;
       case LESS_EQUAL:
         checkNumberOperands(expr.operator, left, right);
-        return (double)left <= (double)right;
+        return (double) left <= (double) right;
       case MINUS:
         checkNumberOperands(expr.operator, left, right);
-        return (double)left - (double)right;
+        return (double) left - (double) right;
       case PLUS:
         if (left instanceof Double && right instanceof Double) {
-          return (double)left + (double)right;
+          return (double) left + (double) right;
         }
         if (left instanceof String && right instanceof String) {
-          return (String)left + (String)right;
+          return (String) left + (String) right;
         }
         throw new RuntimeError(expr.operator, "Operands must be two numbers or two strings.");
       case SLASH:
         checkNumberOperands(expr.operator, left, right);
-        return (double)left / (double)right;
+        return (double) left / (double) right;
       case STAR:
         checkNumberOperands(expr.operator, left, right);
-        return (double)left * (double)right;
+        return (double) left * (double) right;
       case BANG_EQUAL:
         return !isEqual(left, right);
       case EQUAL_EQUAL:
         return isEqual(left, right);
       default:
         // unreachable
-      return null;
+        return null;
     }
   }
 

@@ -35,3 +35,6 @@ var t = 1;
   var t = t + 2;
   print t;
 }
+
+print "hi" or 2;
+print nil or "yes";

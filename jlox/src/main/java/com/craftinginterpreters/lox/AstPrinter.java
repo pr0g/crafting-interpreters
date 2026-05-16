@@ -23,6 +23,11 @@ class AstPrinter implements Expr.Visitor<String> {
     }
     return expr.value.toString();
   }
+  
+  @Override
+  public String visitLogicalExpr(Expr.Logical expr) {
+    return "Implement Logical Expr";
+  }
 
   @Override
   public String visitAssignExpr(Expr.Assign expr) {
