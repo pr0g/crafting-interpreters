@@ -72,3 +72,10 @@ statement     -> exprStmt | printStmt | block ;
 block         -> "{" declaration* "}" ; 
 ```
 
+### If statement syntax
+
+```text
+statement     -> exprStmt | ifStmt | printStmt | block ;
+ifStmt        -> "if" "(" expression ")" statement ( "else" statement )? ;
+```
+
