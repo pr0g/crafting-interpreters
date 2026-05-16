@@ -64,3 +64,11 @@ primary       -> NUMBER | STRING | "true" | "false" | "nil" | "(" expression ")"
 expression    -> assignment ;
 assignment    -> IDENTIFIER "=" assignment | equality ;
 ```
+
+### Block syntax
+
+```text
+statement     -> exprStmt | printStmt | block ;
+block         -> "{" declaration* "}" ; 
+```
+
