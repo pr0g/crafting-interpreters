@@ -87,3 +87,11 @@ assignment    -> IDENTIFIER "=" assignment | logic_or ;
 logic_or      -> logic_and ( "or" logic_and )* ;
 logic_and     -> equality ( "and" equality )* ;
 ```
+
+### While loop syntax
+
+```text
+statement     -> exprStmt | ifStmt | printStmt | whileStmt | block ;
+
+whileStmt     -> "while" "(" expression ")" statement ;
+```
