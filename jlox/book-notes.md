@@ -102,4 +102,12 @@ whileStmt     -> "while" "(" expression ")" statement ;
 statement     -> exprStmt | forStmt | ifStmt | printStmt | whileStmt | block ;
 forStmt       -> "for" "(" ( varDecl | exprStmt | ";" )
                  expression? ";"
-                 expression? ")" statement 
+                 expression? ")" statement ;
+```
+
+## Break statement syntax (attempt)
+
+```text
+statement     -> exprStmt | forStmt | breakStmt | ifStmt | printStmt | whileStmt | block ;
+breakStmt     -> "break" ;
+```

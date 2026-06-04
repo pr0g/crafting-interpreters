@@ -2,8 +2,13 @@ package com.craftinginterpreters.lox;
 
 import java.util.List;
 
+import com.craftinginterpreters.lox.Stmt.Break;
+
 class Interpreter implements Expr.Visitor<Object>,
     Stmt.Visitor<Void> {
+  private static class BreakException extends RuntimeException {
+  }
+
   private Environment environment = new Environment();
 
   @Override
@@ -23,7 +28,7 @@ class Interpreter implements Expr.Visitor<Object>,
         return left;
       }
     }
-    // only evaluates right expr if left expr passes condition based 
+    // only evaluates right expr if left expr passes condition based
     // on being an 'or' or 'and' logical operator (short-circuiting)
     return evaluate(expr.right);
   }
@@ -159,11 +164,15 @@ class Interpreter implements Expr.Visitor<Object>,
     environment.define(stmt.name.lexeme, value);
     return null;
   }
-  
+
   @Override
   public Void visitWhileStmt(Stmt.While stmt) {
-    while (isTruthy(evaluate(stmt.condition))) {
-      execute(stmt.body);
+    try {
+      while (isTruthy(evaluate(stmt.condition))) {
+        execute(stmt.body);
+      }
+    } catch (BreakException ex) {
+      // noop
     }
     return null;
   }
@@ -218,6 +227,11 @@ class Interpreter implements Expr.Visitor<Object>,
         // unreachable
         return null;
     }
+  }
+
+  @Override
+  public Void visitBreakStmt(Stmt.Break stmt) {
+    throw new BreakException();
   }
 
   void interpret(List<Stmt> statements) {
