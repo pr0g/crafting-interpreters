@@ -1,6 +1,7 @@
 package com.craftinginterpreters.lox;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import static com.craftinginterpreters.lox.TokenType.*;
 
@@ -14,7 +15,7 @@ class Parser {
   Parser(List<Token> tokens) {
     this.tokens = tokens;
   }
-  
+
   List<Stmt> parse() {
     List<Stmt> statements = new ArrayList<>();
     while (!isAtEnd()) {
@@ -42,6 +43,9 @@ class Parser {
 
   // statement -> exprStmt | printStmt
   private Stmt statement() {
+    if (match(FOR)) {
+      return forStatement();
+    }
     if (match(IF)) {
       return ifStatement();
     }
@@ -55,6 +59,44 @@ class Parser {
       return new Stmt.Block(block());
     }
     return expressionStatement();
+  }
+
+  private Stmt forStatement() {
+    consume(LEFT_PAREN, "Expect '(' after 'for'.");
+    Stmt initializer;
+    if (match(SEMICOLON)) {
+      initializer = null;
+    } else if (match(VAR)) {
+      initializer = varDeclaration();
+    } else {
+      initializer = expressionStatement();
+    }
+
+    Expr condition = null;
+    if (!check(SEMICOLON)) {
+      condition = expression();
+    }
+    consume(SEMICOLON, "Expect ';' after loop condition.");
+
+    Expr increment = null;
+    if (!check(RIGHT_PAREN)) {
+      increment = expression();
+    }
+    consume(RIGHT_PAREN, "Expect ')' after for clauses.");
+    Stmt body = statement();
+
+    if (increment != null) {
+      body = new Stmt.Block(
+          Arrays.asList(body, new Stmt.Expression(increment)));
+    }
+    if(condition == null) {
+      condition = new Expr.Literal(true);
+    }
+    body = new Stmt.While(condition, body);
+    if (initializer != null) {
+      body = new Stmt.Block(Arrays.asList(initializer, body));
+    }
+    return body;
   }
 
   private Stmt ifStatement() {
@@ -84,7 +126,7 @@ class Parser {
     consume(SEMICOLON, "Expect ';' after variable declaration");
     return new Stmt.Var(name, initializer);
   }
-  
+
   private Stmt whileStatement() {
     consume(LEFT_PAREN, "Expect '(' after 'while'.");
     Expr condition = expression();
@@ -115,14 +157,14 @@ class Parser {
       Token equals = previous();
       Expr value = assignment();
       if (expr instanceof Expr.Variable) {
-        Token name = ((Expr.Variable)expr).name;
+        Token name = ((Expr.Variable) expr).name;
         return new Expr.Assign(name, value);
       }
       error(equals, "Invalid assignment target.");
     }
     return expr;
   }
-  
+
   private Expr or() {
     Expr expr = and();
     while (match(OR)) {
@@ -133,7 +175,7 @@ class Parser {
     return expr;
   }
 
-   private Expr and() {
+  private Expr and() {
     Expr expr = equality();
     while (match(AND)) {
       Token operator = previous();
@@ -141,7 +183,7 @@ class Parser {
       expr = new Expr.Logical(expr, operator, right);
     }
     return expr;
-   }
+  }
 
   // equality -> comparison ( ( "!=" | "==" ) comparison )* ;
   private Expr equality() {

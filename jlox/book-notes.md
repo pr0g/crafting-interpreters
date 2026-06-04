@@ -95,3 +95,11 @@ statement     -> exprStmt | ifStmt | printStmt | whileStmt | block ;
 
 whileStmt     -> "while" "(" expression ")" statement ;
 ```
+
+## For loop syntax
+
+```text
+statement     -> exprStmt | forStmt | ifStmt | printStmt | whileStmt | block ;
+forStmt       -> "for" "(" ( varDecl | exprStmt | ";" )
+                 expression? ";"
+                 expression? ")" statement 
