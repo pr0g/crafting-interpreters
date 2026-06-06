@@ -111,3 +111,11 @@ forStmt       -> "for" "(" ( varDecl | exprStmt | ";" )
 statement     -> exprStmt | forStmt | breakStmt | ifStmt | printStmt | whileStmt | block ;
 breakStmt     -> "break" ;
 ```
+
+## Function syntax
+
+```text
+unary         -> ("!" | "-") unary | call ;
+call          -> primary ( "(" arguments? ")" )* ;
+arguments     -> expression ( "," expression )* ;
+```
