@@ -119,3 +119,12 @@ unary         -> ("!" | "-") unary | call ;
 call          -> primary ( "(" arguments? ")" )* ;
 arguments     -> expression ( "," expression )* ;
 ```
+
+## Function syntax continued
+
+```text
+declaration   -> funcDecl | varDecl | statement ;
+funDecl       -> "fun" function ;
+function      -> IDENTIFIER "(" parameters? ")" block ;
+parameters    -> IDENTIFIER ( "," IDENTIFIER )* ; 
+```
