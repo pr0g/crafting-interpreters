@@ -128,3 +128,10 @@ funDecl       -> "fun" function ;
 function      -> IDENTIFIER "(" parameters? ")" block ;
 parameters    -> IDENTIFIER ( "," IDENTIFIER )* ; 
 ```
+
+## Function return types
+
+```text
+statement     -> exprStmt | forStmt | ifStmt | printStmt | returnStmt | whileStmt | block ;
+returnStmt    -> "return" expression? ";" ;
+```

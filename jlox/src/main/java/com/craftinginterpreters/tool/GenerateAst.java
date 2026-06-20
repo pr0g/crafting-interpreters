@@ -31,6 +31,7 @@ public class GenerateAst {
         "If           : Expr condition, Stmt thenBranch," +
                       " Stmt elseBranch",
         "Print        : Expr expression",
+        "Return       : Token keyword, Expr value",
         "Break        : ",
         "While        : Expr condition, Stmt body",
         "Var          : Token name, Expr initializer"));
