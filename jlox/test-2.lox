@@ -97,3 +97,9 @@ class Bagel {}
 var bagel = Bagel();
 
 print bagel;
+
+// test properties
+var something = 5;
+bagel.something = something;
+
+print bagel.something;

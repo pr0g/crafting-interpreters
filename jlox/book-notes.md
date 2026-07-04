@@ -142,3 +142,9 @@ returnStmt    -> "return" expression? ";" ;
 declaration   -> classDecl | funDecl | varDecl | statement ;
 classDecl     -> "class" IDENTIFIER "{" function* "}" ;
 ```
+
+## Class instances
+
+```text
+call          -> primary ( "(" arguments? ")" | "." IDENTIFIER )* ;
+```
