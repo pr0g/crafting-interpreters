@@ -135,3 +135,10 @@ parameters    -> IDENTIFIER ( "," IDENTIFIER )* ;
 statement     -> exprStmt | forStmt | ifStmt | printStmt | returnStmt | whileStmt | block ;
 returnStmt    -> "return" expression? ";" ;
 ```
+
+## Class syntax
+
+```text
+declaration   -> classDecl | funDecl | varDecl | statement ;
+classDecl     -> "class" IDENTIFIER "{" function* "}" ;
+```

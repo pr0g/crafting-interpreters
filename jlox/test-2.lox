@@ -32,7 +32,7 @@ print c;
 
 var t = 1;
 {
-  var t = t + 2;
+  // var t = t + 2; // check for defining variable with the same name
   print t;
 }
 
@@ -84,3 +84,11 @@ fun makeCounter() {
 var counter = makeCounter();
 counter();
 counter();
+
+class DevonshireCream {
+  serveOn() {
+    return "Scones";
+  }
+}
+
+print DevonshireCream;
