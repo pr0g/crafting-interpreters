@@ -103,3 +103,11 @@ var something = 5;
 bagel.something = something;
 
 print bagel.something;
+
+class Bacon {
+  eat() {
+    print "Crunch crunch crunch!";
+  }
+}
+
+Bacon().eat();
