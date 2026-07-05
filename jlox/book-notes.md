@@ -146,5 +146,8 @@ classDecl     -> "class" IDENTIFIER "{" function* "}" ;
 ## Class instances
 
 ```text
+// Get
 call          -> primary ( "(" arguments? ")" | "." IDENTIFIER )* ;
+// Set
+assignment    -> ( call "." )? IDENTIFIER "=" assignment | logic_or ;
 ```
