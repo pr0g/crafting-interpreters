@@ -151,3 +151,8 @@ call          -> primary ( "(" arguments? ")" | "." IDENTIFIER )* ;
 // Set
 assignment    -> ( call "." )? IDENTIFIER "=" assignment | logic_or ;
 ```
+
+## Challenges/Todos
+
+1. Implement static methods
+2. Implement getters/setters for classes
