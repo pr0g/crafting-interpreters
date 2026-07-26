@@ -152,6 +152,12 @@ call          -> primary ( "(" arguments? ")" | "." IDENTIFIER )* ;
 assignment    -> ( call "." )? IDENTIFIER "=" assignment | logic_or ;
 ```
 
+## Class inheritance
+
+```text
+classDecl     -> "class" IDENTIFIER ( "<" IDENTIFIER )? "{" function* "}" ;
+```
+
 ## Challenges/Todos
 
 1. Implement static methods
