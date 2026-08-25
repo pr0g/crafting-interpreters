@@ -158,6 +158,12 @@ assignment    -> ( call "." )? IDENTIFIER "=" assignment | logic_or ;
 classDecl     -> "class" IDENTIFIER ( "<" IDENTIFIER )? "{" function* "}" ;
 ```
 
+## Class inheritance - super
+
+```text
+primary       -> "true" | "false" | "nil" | "this" | NUMBER | STRING | IDENTIFIER | "(" expression ")" | "super" "." IDENTIFIER ;
+```
+
 ## Challenges/Todos
 
 1. Implement static methods
