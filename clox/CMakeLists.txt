@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26)
 project(clox LANGUAGES C)
 add_executable(${PROJECT_NAME})
-target_sources(${PROJECT_NAME} PRIVATE main.c memory.c chunk.c)
+target_sources(${PROJECT_NAME} PRIVATE main.c memory.c chunk.c debug.c)
 target_compile_features(${PROJECT_NAME} PRIVATE c_std_23)
